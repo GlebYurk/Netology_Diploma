@@ -28,7 +28,7 @@ namespace WorldMode
 
         private List<PatchHolder> _patchHolders;
 
-        //Префабы монстров (Нужно сделать интерфейс для врагов) 
+        //ГЏГ°ГҐГґГ ГЎГ» Г¬Г®Г­Г±ГІГ°Г®Гў (ГЌГіГ¦Г­Г® Г±Г¤ГҐГ«Г ГІГј ГЁГ­ГІГҐГ°ГґГҐГ©Г± Г¤Г«Гї ГўГ°Г ГЈГ®Гў) 
         private GameObject _spiderPref, _spiderMagPref, _spiderSpeedPref, _slimePref, _slimeMagPref;
 
         private GameObject _player;
@@ -36,7 +36,7 @@ namespace WorldMode
         private GameObject _menu;
         private TMP_Text _levelObject;
 
-        //Заменить из-за содержание статической переменной
+        //Г‡Г Г¬ГҐГ­ГЁГІГј ГЁГ§-Г§Г  Г±Г®Г¤ГҐГ°Г¦Г Г­ГЁГҐ Г±ГІГ ГІГЁГ·ГҐГ±ГЄГ®Г© ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г®Г©
         private LevelData _levelData;
 
         private event EventHandler NewLevelHandler;
@@ -46,7 +46,7 @@ namespace WorldMode
 
         private bool _gameOver;
 
-        //Конструктор предпологающий, что игра начнеться в режиме агента
+        //ГЉГ®Г­Г±ГІГ°ГіГЄГІГ®Г° ГЇГ°ГҐГ¤ГЇГ®Г«Г®ГЈГ ГѕГ№ГЁГ©, Г·ГІГ® ГЁГЈГ°Г  Г­Г Г·Г­ГҐГІГјГ±Гї Гў Г°ГҐГ¦ГЁГ¬ГҐ Г ГЈГҐГ­ГІГ 
         public World(GameObject player, MonoBehaviour monoBehaviour)
         {
             Canvas canvas = Object.Instantiate(Resources.Load<Canvas>("Pref/UI"));
@@ -81,8 +81,8 @@ namespace WorldMode
 
         }
 
-        // Метод в Update
-        // Нужно отделить часть в fixUpdate
+        // ГЊГҐГІГ®Г¤ Гў Update
+        // ГЌГіГ¦Г­Г® Г®ГІГ¤ГҐГ«ГЁГІГј Г·Г Г±ГІГј Гў fixUpdate
         public void GameExecution()
         {
             if (!_gameOver)
@@ -170,7 +170,7 @@ namespace WorldMode
             }
         }
 
-        // Старт первого уровня
+        // Г‘ГІГ Г°ГІ ГЇГҐГ°ГўГ®ГЈГ® ГіГ°Г®ГўГ­Гї
         private void On1LevelStart()
         {
             _levelObject.SetText("Defend Green");
@@ -304,7 +304,7 @@ namespace WorldMode
         private void On3LevelStart()
         {
             _levelData.OnLevelSet("Kill", 14, 1);
-
+            
             _levelObject.SetText("Destroy Slime");
             _agentList.Add((Resources.Load<Henkoten>("Pref/Agent/Henkoten")));
 
@@ -371,6 +371,8 @@ namespace WorldMode
         {
             _levelData.OnLevelSet("Kill", 1, 1);
 
+            _levelObject.SetText("Find it in yourself");
+            
             List<List<Tile>> tileMap = new List<List<Tile>>();
             _tileController = new TileController(tileMap);
             LevelGenerator levelGenerator = new LevelGenerator("Limbo", _agentList, _player, _tileController);
@@ -383,7 +385,7 @@ namespace WorldMode
             OnPause();
         }
 
-        // При входе в режим карты
+        // ГЏГ°ГЁ ГўГµГ®Г¤ГҐ Гў Г°ГҐГ¦ГЁГ¬ ГЄГ Г°ГІГ»
         public void OnMapViewEnter()
         {
             foreach (Agent agent in _agentList)
@@ -392,7 +394,7 @@ namespace WorldMode
             }
         }
 
-        // При выходе из карты
+        // ГЏГ°ГЁ ГўГ»ГµГ®Г¤ГҐ ГЁГ§ ГЄГ Г°ГІГ»
         private void OnMapViewExit()
         {
             foreach (Agent agent in _agentList)
@@ -401,7 +403,7 @@ namespace WorldMode
             }
         }
 
-        // Событие при нажатии на агента в режиме карты
+        // Г‘Г®ГЎГ»ГІГЁГҐ ГЇГ°ГЁ Г­Г Г¦Г ГІГЁГЁ Г­Г  Г ГЈГҐГ­ГІГ  Гў Г°ГҐГ¦ГЁГ¬ГҐ ГЄГ Г°ГІГ»
         private void OnAgentClick(Agent agent)
         {
             IAgent setAgent = null;
@@ -427,7 +429,7 @@ namespace WorldMode
                 _enemyActions.RemoveAt(0);
             }
 
-            //Если уровень законченуспешно дожен быть жив как минимум один агент. Нужно будет изменить во избежание исключений
+            //Г…Г±Г«ГЁ ГіГ°Г®ГўГҐГ­Гј Г§Г ГЄГ®Г­Г·ГҐГ­ГіГ±ГЇГҐГёГ­Г® Г¤Г®Г¦ГҐГ­ ГЎГ»ГІГј Г¦ГЁГў ГЄГ ГЄ Г¬ГЁГ­ГЁГ¬ГіГ¬ Г®Г¤ГЁГ­ Г ГЈГҐГ­ГІ. ГЌГіГ¦Г­Г® ГЎГіГ¤ГҐГІ ГЁГ§Г¬ГҐГ­ГЁГІГј ГўГ® ГЁГ§ГЎГҐГ¦Г Г­ГЁГҐ ГЁГ±ГЄГ«ГѕГ·ГҐГ­ГЁГ©
             for (int i = 0; i < _agentList.Count; i++)
             {
                 Object.Destroy(_agentList[i].GetAgentObject());
