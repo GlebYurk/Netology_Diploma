@@ -30,7 +30,7 @@ namespace WorldMode
 
         private List<PatchHolder> _patchHolders;
 
-        //Ïðåôàáû ìîíñòðîâ (Íóæíî ñäåëàòü èíòåðôåéñ äëÿ âðàãîâ) 
+        //Префабы монстров (Нужно сделать интерфейс для врагов) 
         private GameObject _spiderPref, _spiderMagPref, _spiderSpeedPref, _slimePref, _slimeMagPref;
 
         private GameObject _player;
@@ -39,7 +39,7 @@ namespace WorldMode
         private TMP_Text _levelObject;
         private TMP_Text _damageCalculation;
 
-        //Çàìåíèòü èç-çà ñîäåðæàíèå ñòàòè÷åñêîé ïåðåìåííîé
+        //Заменить из-за содержание статической переменной
         private LevelData _levelData;
 
         private event EventHandler NewLevelHandler;
@@ -49,7 +49,7 @@ namespace WorldMode
 
         private bool _gameOver;
 
-        //Êîíñòðóêòîð ïðåäïîëîãàþùèé, ÷òî èãðà íà÷íåòüñÿ â ðåæèìå àãåíòà
+        //Конструктор предпологающий, что игра начнеться в режиме агента
         public World(GameObject player, MonoBehaviour monoBehaviour)
         {
             Canvas canvas = Object.Instantiate(Resources.Load<Canvas>("Pref/UI"));
@@ -87,8 +87,8 @@ namespace WorldMode
 
         }
 
-        // Ìåòîä â Update
-        // Íóæíî îòäåëèòü ÷àñòü â fixUpdate
+        // Метод в Update
+        // Нужно отделить часть в fixUpdate
         public void GameExecution()
         {
             
@@ -106,10 +106,18 @@ namespace WorldMode
                             IAgent agent = _playerAction.GetAgent();
                             _playerAction.MapView();
                             _agentList.Remove(agent);
-                            agent.GetAgentAction().StopCourutine(_monoBehaviour);
-                            Object.Destroy(agent.GetAgentObject());
-                            CheckGameOver();
+                            for (int i = 0; i < _agentList.Count; i++)
+                            {
+                                if (agent == _agentList[i])
+                                {
+                                    agent.GetAgentAction().StopCourutine(_monoBehaviour);
+                                    Object.Destroy(agent.GetAgentObject());
+                                    Object.Destroy(_agentBars[i].GetBar());
+                                    _agentBars.RemoveAt(i);
 
+                                }
+                            }
+                            CheckGameOver();
                         }
                         else
                         {
@@ -120,7 +128,7 @@ namespace WorldMode
                             {
                                 GeneralLiveForm PlayerForm = _playerAction.GetAgent().GetAgentAction().GetLiveForm();
                                 targetForm = _playerAction.GetAgent().GetAgentAction().GetTargetList()[0].GetLiveForm();
-                                _damageCalculation.text = "Çäîðîâüå ïðîòèâíèêà= " + targetForm.GetHP() + "\nÎæèäàåìûé óðîí ïî ïðîòèâíèêó " + targetForm.GetExpectedDamage(PlayerForm.GetAtackType(), PlayerForm.GetAtack(), 0);
+                                _damageCalculation.text = "Здоровье противника= " + targetForm.GetHP() + "\nОжидаемый урон по противнику " + targetForm.GetExpectedDamage(PlayerForm.GetAtackType(), PlayerForm.GetAtack(), 0);
                             }
                             else { _damageCalculation.text = ""; }
                         }
@@ -189,7 +197,7 @@ namespace WorldMode
             }
         }
 
-        // Ñòàðò ïåðâîãî óðîâíÿ
+        // Старт первого уровня
         private void On1LevelStart()
         {
             _levelData.OnLevelSet("Defend", 30, 5);//30
@@ -387,7 +395,7 @@ namespace WorldMode
             OnPause();
         }
 
-        // Ïðè âõîäå â ðåæèì êàðòû
+        // При входе в режим карты
         public void OnMapViewEnter()
         {
             foreach (Agent agent in _agentList)
@@ -396,7 +404,7 @@ namespace WorldMode
             }
         }
 
-        // Ïðè âûõîäå èç êàðòû
+        // При выходе из карты
         private void OnMapViewExit()
         {
             foreach (Agent agent in _agentList)
@@ -405,7 +413,7 @@ namespace WorldMode
             }
         }
 
-        // Ñîáûòèå ïðè íàæàòèè íà àãåíòà â ðåæèìå êàðòû
+        // Событие при нажатии на агента в режиме карты
         private void OnAgentClick(Agent agent)
         {
             IAgent setAgent = null;
