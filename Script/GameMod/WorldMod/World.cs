@@ -30,7 +30,7 @@ namespace WorldMode
 
         private List<PatchHolder> _patchHolders;
 
-        //Префабы монстров (Нужно сделать интерфейс для врагов) 
+        //ГЏГ°ГҐГґГ ГЎГ» Г¬Г®Г­Г±ГІГ°Г®Гў (ГЌГіГ¦Г­Г® Г±Г¤ГҐГ«Г ГІГј ГЁГ­ГІГҐГ°ГґГҐГ©Г± Г¤Г«Гї ГўГ°Г ГЈГ®Гў) 
         private GameObject _spiderPref, _spiderMagPref, _spiderSpeedPref, _slimePref, _slimeMagPref;
 
         private GameObject _player;
@@ -39,7 +39,7 @@ namespace WorldMode
         private TMP_Text _levelObject;
         private TMP_Text _damageCalculation;
 
-        //Заменить из-за содержание статической переменной
+        //Г‡Г Г¬ГҐГ­ГЁГІГј ГЁГ§-Г§Г  Г±Г®Г¤ГҐГ°Г¦Г Г­ГЁГҐ Г±ГІГ ГІГЁГ·ГҐГ±ГЄГ®Г© ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г®Г©
         private LevelData _levelData;
 
         private event EventHandler NewLevelHandler;
@@ -49,7 +49,7 @@ namespace WorldMode
 
         private bool _gameOver;
 
-        //Конструктор предпологающий, что игра начнеться в режиме агента
+        //ГЉГ®Г­Г±ГІГ°ГіГЄГІГ®Г° ГЇГ°ГҐГ¤ГЇГ®Г«Г®ГЈГ ГѕГ№ГЁГ©, Г·ГІГ® ГЁГЈГ°Г  Г­Г Г·Г­ГҐГІГјГ±Гї Гў Г°ГҐГ¦ГЁГ¬ГҐ Г ГЈГҐГ­ГІГ 
         public World(GameObject player, MonoBehaviour monoBehaviour)
         {
             Canvas canvas = Object.Instantiate(Resources.Load<Canvas>("Pref/UI"));
@@ -87,8 +87,8 @@ namespace WorldMode
 
         }
 
-        // Метод в Update
-        // Нужно отделить часть в fixUpdate
+        // ГЊГҐГІГ®Г¤ Гў Update
+        // ГЌГіГ¦Г­Г® Г®ГІГ¤ГҐГ«ГЁГІГј Г·Г Г±ГІГј Гў fixUpdate
         public void GameExecution()
         {
             
@@ -120,7 +120,7 @@ namespace WorldMode
                             {
                                 GeneralLiveForm PlayerForm = _playerAction.GetAgent().GetAgentAction().GetLiveForm();
                                 targetForm = _playerAction.GetAgent().GetAgentAction().GetTargetList()[0].GetLiveForm();
-                                _damageCalculation.text = "Здоровье противника= " + targetForm.GetHP() + "\nОжидаемый урон по противнику " + targetForm.GetExpectedDamage(PlayerForm.GetAtackType(), PlayerForm.GetAtack(), 0);
+                                _damageCalculation.text = "Г‡Г¤Г®Г°Г®ГўГјГҐ ГЇГ°Г®ГІГЁГўГ­ГЁГЄГ = " + targetForm.GetHP() + "\nГЋГ¦ГЁГ¤Г ГҐГ¬Г»Г© ГіГ°Г®Г­ ГЇГ® ГЇГ°Г®ГІГЁГўГ­ГЁГЄГі " + targetForm.GetExpectedDamage(PlayerForm.GetAtackType(), PlayerForm.GetAtack(), 0);
                             }
                             else { _damageCalculation.text = ""; }
                         }
@@ -189,10 +189,10 @@ namespace WorldMode
             }
         }
 
-        // Старт первого уровня
+        // Г‘ГІГ Г°ГІ ГЇГҐГ°ГўГ®ГЈГ® ГіГ°Г®ГўГ­Гї
         private void On1LevelStart()
         {
-            _levelData.OnLevelSet("Defend", 1, 5);//30
+            _levelData.OnLevelSet("Defend", 30, 5);//30
 
             _agentList.Add((Resources.Load<Qwerty>("Pref/Agent/Qwerty")));
 
@@ -387,7 +387,7 @@ namespace WorldMode
             OnPause();
         }
 
-        // При входе в режим карты
+        // ГЏГ°ГЁ ГўГµГ®Г¤ГҐ Гў Г°ГҐГ¦ГЁГ¬ ГЄГ Г°ГІГ»
         public void OnMapViewEnter()
         {
             foreach (Agent agent in _agentList)
@@ -396,7 +396,7 @@ namespace WorldMode
             }
         }
 
-        // При выходе из карты
+        // ГЏГ°ГЁ ГўГ»ГµГ®Г¤ГҐ ГЁГ§ ГЄГ Г°ГІГ»
         private void OnMapViewExit()
         {
             foreach (Agent agent in _agentList)
@@ -405,7 +405,7 @@ namespace WorldMode
             }
         }
 
-        // Событие при нажатии на агента в режиме карты
+        // Г‘Г®ГЎГ»ГІГЁГҐ ГЇГ°ГЁ Г­Г Г¦Г ГІГЁГЁ Г­Г  Г ГЈГҐГ­ГІГ  Гў Г°ГҐГ¦ГЁГ¬ГҐ ГЄГ Г°ГІГ»
         private void OnAgentClick(Agent agent)
         {
             IAgent setAgent = null;
